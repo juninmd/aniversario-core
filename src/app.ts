@@ -6,6 +6,10 @@ import authRouter from "./routes/auth";
 
 const app = express();
 
+if (process.env.NODE_ENV === "production") {
+  app.set("trust proxy", 1);
+}
+
 app.use(helmet());
 app.use(corsMiddleware);
 app.use(generalLimiter);
