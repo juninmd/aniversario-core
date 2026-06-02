@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import type { ApiResponse, User } from "../types";
 import { authLimiter, validateLogin } from "../middleware";
-import { AuthenticationError } from "../utils/errors";
+import { AuthenticationError, ValidationError } from "../utils/errors";
 
 const router = Router();
 
@@ -40,7 +40,7 @@ router.post(
 
     const existing = users.find((u) => u.username === username);
     if (existing) {
-      throw new AuthenticationError("Username already exists");
+      throw new ValidationError("Username already exists");
     }
 
     const passwordHash = await bcrypt.hash(password, 12);
@@ -66,12 +66,13 @@ router.post(
     const { username, password } = req.body;
 
     const user = users.find((u) => u.username === username);
-    if (!user) {
-      throw new AuthenticationError("Invalid username or password");
-    }
+    
+    // Use a dummy hash to prevent timing attacks when the user is not found
+    const dummyHash = "$2b$12$Lqy8K7R.77K7R.77K7R.7uV8Y7R.77K7R.77K7R.77K7R.77K7R.7";
+    const passwordHash = user ? user.passwordHash : dummyHash;
+    const passwordValid = await bcrypt.compare(password, passwordHash);
 
-    const passwordValid = await bcrypt.compare(password, user.passwordHash);
-    if (!passwordValid) {
+    if (!user || !passwordValid) {
       throw new AuthenticationError("Invalid username or password");
     }
 
