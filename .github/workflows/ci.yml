@@ -94,5 +94,5 @@ jobs:
         with:
           fetch-depth: 0
       - name: Scan for secrets with Gitleaks
-        uses: gitleaks/gitleaks-action@v2
+        uses: gitleaks/gitleaks-action@v3
         continue-on-error: true
