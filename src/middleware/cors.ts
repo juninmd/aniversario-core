@@ -6,8 +6,11 @@ const allowedOrigins = (process.env.ALLOWED_ORIGINS || "http://localhost:3000")
 
 export const corsMiddleware = cors({
   origin: (origin, callback) => {
-    if (!origin || allowedOrigins.includes("*") || allowedOrigins.includes(origin)) {
+    if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
+    } else if (allowedOrigins.includes("*")) {
+      // Do not allow credentials when matching wildcard to prevent CORS exploitation
+      callback(null, false);
     } else {
       callback(new Error(`Origin ${origin} not allowed by CORS`));
     }
