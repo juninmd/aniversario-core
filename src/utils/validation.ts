@@ -17,16 +17,16 @@ export function isValidDate(dateString: string): boolean {
   }
   const [year, month, day] = dateString.split("-").map(Number);
   return (
-    date.getFullYear() === year &&
-    date.getMonth() + 1 === month &&
-    date.getDate() === day
+    date.getUTCFullYear() === year &&
+    date.getUTCMonth() + 1 === month &&
+    date.getUTCDate() === day
   );
 }
 
 export function isValidName(name: string): boolean {
   if (typeof name !== "string") return false;
   if (name.length < 1 || name.length > 200) return false;
-  return /^[a-zA-ZÀ-ÿ\s'.-]+$/.test(name);
+  return /^[\p{L}\s'.-]+$/u.test(name);
 }
 
 export function isValidType(type: string): boolean {
