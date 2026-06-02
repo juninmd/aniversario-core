@@ -18,7 +18,7 @@ export const validateCreateAnniversary = [
     .trim()
     .isLength({ min: 1, max: 200 })
     .withMessage("Name must be between 1 and 200 characters")
-    .matches(/^[a-zA-ZÀ-ÿ\s'.-]+$/)
+    .matches(/^[\p{L}\s'.-]+$/u)
     .withMessage("Name contains invalid characters"),
   body("date")
     .isString()
@@ -32,9 +32,9 @@ export const validateCreateAnniversary = [
       }
       const [y, m, d] = value.split("-").map(Number);
       if (
-        parsed.getFullYear() !== y ||
-        parsed.getMonth() + 1 !== m ||
-        parsed.getDate() !== d
+        parsed.getUTCFullYear() !== y ||
+        parsed.getUTCMonth() + 1 !== m ||
+        parsed.getUTCDate() !== d
       ) {
         throw new Error("Date must be a valid calendar date");
       }
