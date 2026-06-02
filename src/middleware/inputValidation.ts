@@ -31,11 +31,7 @@ export const validateCreateAnniversary = [
         throw new Error("Date must be a valid calendar date");
       }
       const [y, m, d] = value.split("-").map(Number);
-      if (
-        parsed.getFullYear() !== y ||
-        parsed.getMonth() + 1 !== m ||
-        parsed.getDate() !== d
-      ) {
+      if (parsed.getFullYear() !== y || parsed.getMonth() + 1 !== m || parsed.getDate() !== d) {
         throw new Error("Date must be a valid calendar date");
       }
       return true;

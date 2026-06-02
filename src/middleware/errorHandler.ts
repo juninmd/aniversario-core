@@ -9,17 +9,10 @@ interface PayloadTooLargeError extends Error {
 }
 
 function isPayloadTooLarge(err: Error): err is PayloadTooLargeError {
-  return (
-    (err as PayloadTooLargeError).type === "entity.too.large"
-  );
+  return (err as PayloadTooLargeError).type === "entity.too.large";
 }
 
-export function errorHandler(
-  err: Error,
-  _req: Request,
-  res: Response,
-  _next: NextFunction,
-): void {
+export function errorHandler(err: Error, _req: Request, res: Response, _next: NextFunction): void {
   if (isPayloadTooLarge(err)) {
     res.status(413).json({
       success: false,

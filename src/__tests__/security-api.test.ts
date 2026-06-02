@@ -7,11 +7,9 @@ process.env.JWT_SECRET = TEST_SECRET;
 process.env.NODE_ENV = "test";
 
 function getToken(role: "admin" | "user" = "user"): string {
-  return jwt.sign(
-    { id: "test-user", username: "testuser", role },
-    TEST_SECRET,
-    { expiresIn: "1h" },
-  );
+  return jwt.sign({ id: "test-user", username: "testuser", role }, TEST_SECRET, {
+    expiresIn: "1h",
+  });
 }
 
 describe("API Security", () => {
@@ -29,9 +27,7 @@ describe("API Security", () => {
 
   describe("CORS", () => {
     it("allows requests from allowed origins", async () => {
-      const res = await request(app)
-        .get("/health")
-        .set("Origin", "http://localhost:3000");
+      const res = await request(app).get("/health").set("Origin", "http://localhost:3000");
       expect(res.headers["access-control-allow-origin"]).toBe("http://localhost:3000");
     });
 
@@ -224,16 +220,14 @@ describe("API Security", () => {
     });
 
     it("rejects unauthenticated requests", async () => {
-      const res = await request(app)
-        .delete("/api/anniversaries/some-id");
+      const res = await request(app).delete("/api/anniversaries/some-id");
       expect(res.status).toBe(401);
     });
   });
 
   describe("Error Handling", () => {
     it("returns 404 for unknown routes without leaking internals", async () => {
-      const res = await request(app)
-        .get("/api/nonexistent-route");
+      const res = await request(app).get("/api/nonexistent-route");
 
       expect(res.status).toBe(404);
       expect(res.body.error).toBeDefined();

@@ -16,11 +16,7 @@ export function isValidDate(dateString: string): boolean {
     return false;
   }
   const [year, month, day] = dateString.split("-").map(Number);
-  return (
-    date.getFullYear() === year &&
-    date.getMonth() + 1 === month &&
-    date.getDate() === day
-  );
+  return date.getFullYear() === year && date.getMonth() + 1 === month && date.getDate() === day;
 }
 
 export function isValidName(name: string): boolean {
@@ -39,9 +35,7 @@ export function isValidNotes(notes: unknown): boolean {
   return notes.length <= 500;
 }
 
-export function sanitizeInput<T extends object>(
-  input: T,
-): T {
+export function sanitizeInput<T extends object>(input: T): T {
   const sanitized = { ...input } as Record<string, unknown>;
   for (const key in sanitized) {
     if (typeof sanitized[key] === "string") {

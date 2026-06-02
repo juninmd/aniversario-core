@@ -7,11 +7,9 @@ process.env.JWT_SECRET = TEST_SECRET;
 process.env.NODE_ENV = "test";
 
 function getToken(role: "admin" | "user" = "user"): string {
-  return jwt.sign(
-    { id: "test-user", username: "testuser", role },
-    TEST_SECRET,
-    { expiresIn: "1h" },
-  );
+  return jwt.sign({ id: "test-user", username: "testuser", role }, TEST_SECRET, {
+    expiresIn: "1h",
+  });
 }
 
 describe("Authentication Security", () => {
@@ -101,9 +99,7 @@ describe("Authentication Security", () => {
     });
 
     it("rejects login with empty body", async () => {
-      const res = await request(app)
-        .post("/api/auth/login")
-        .send({});
+      const res = await request(app).post("/api/auth/login").send({});
 
       expect(res.status).toBe(400);
     });
