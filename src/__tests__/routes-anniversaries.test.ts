@@ -96,7 +96,7 @@ describe("Anniversaries Routes", () => {
     it("rejects user role from creating with invalid data", async () => {
       const res = await request(app)
         .post("/api/anniversaries")
-        .set("Authorization", `Bearer ${getToken("admin")}`)
+        .set("Authorization", "Bearer " + getToken("user"))
         .send({ name: "", date: "invalid", type: "unknown" });
       expect(res.status).toBe(400);
     });
