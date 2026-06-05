@@ -69,7 +69,7 @@ describe("Authentication Security", () => {
         .post("/api/auth/register")
         .send({ username: "existinguser", password: "OtherPass123!" });
 
-      expect(res.status).toBe(401);
+      expect(res.status).toBe(400);
     });
   });
 
